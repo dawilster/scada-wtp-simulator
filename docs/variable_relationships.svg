@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 820" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="rainGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0f2744"/>
+    </linearGradient>
+    <linearGradient id="shutdownGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0,0 10,3.5 0,7" fill="#e74c3c"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0,0 10,3.5 0,7" fill="#3498db"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0,0 10,3.5 0,7" fill="#2ecc71"/>
+    </marker>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0,0 10,3.5 0,7" fill="#00b4d8"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0,0 10,3.5 0,7" fill="#f39c12"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0,0 10,3.5 0,7" fill="#9b59b6"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0,0 10,3.5 0,7" fill="#64748b"/>
+    </marker>
+    <marker id="arrowDanger" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto">
+      <polygon points="0,0 12,4 0,8" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="820" rx="8" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="480" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Process Variable Relationships — Rain Event Cascade</text>
+  <text x="480" y="52" text-anchor="middle" font-size="11" fill="#64748b">Freshwater Creek catchment: how a tropical storm propagates through the treatment plant</text>
+
+  <!-- ═══ RAIN EVENT TRIGGER (top center) ═══ -->
+  <rect x="355" y="72" width="250" height="68" rx="10" fill="url(#rainGrad)" filter="url(#shadow)" stroke="#0f2744" stroke-width="1.5"/>
+  <text x="480" y="97" text-anchor="middle" font-size="15" font-weight="700" fill="#7dd3fc">Rain Event</text>
+  <text x="480" y="115" text-anchor="middle" font-size="10" fill="#93c5fd">Tropical storm hits Freshwater Creek</text>
+  <text x="480" y="129" text-anchor="middle" font-size="10" fill="#93c5fd">catchment (Poisson process, 18-36h mean)</text>
+
+  <!-- ═══ VARIABLE NODES — arranged in two rows ═══ -->
+
+  <!-- Row 1: Primary rain-affected variables -->
+  <!-- Raw Turbidity -->
+  <rect x="40" y="210" width="180" height="75" rx="6" fill="#ffffff" filter="url(#shadow)" stroke="#e74c3c" stroke-width="2"/>
+  <rect x="40" y="210" width="180" height="24" rx="6" fill="#fef2f2"/>
+  <rect x="40" y="230" width="180" height="2" fill="#e74c3c" opacity="0.3"/>
+  <text x="130" y="227" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">Raw Turbidity</text>
+  <text x="130" y="252" text-anchor="middle" font-size="11" fill="#1e293b">2–5 NTU normal</text>
+  <text x="130" y="270" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="600">Spikes 200–800 NTU</text>
+
+  <!-- pH -->
+  <rect x="260" y="210" width="180" height="75" rx="6" fill="#ffffff" filter="url(#shadow)" stroke="#3498db" stroke-width="2"/>
+  <rect x="260" y="210" width="180" height="24" rx="6" fill="#eff6ff"/>
+  <rect x="260" y="230" width="180" height="2" fill="#3498db" opacity="0.3"/>
+  <text x="350" y="227" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">pH Level</text>
+  <text x="350" y="252" text-anchor="middle" font-size="11" fill="#1e293b">7.0–7.4 normal</text>
+  <text x="350" y="270" text-anchor="middle" font-size="10" fill="#3498db" font-weight="600">Drops 0.2–0.8 (acid runoff)</text>
+
+  <!-- Flow Rate -->
+  <rect x="520" y="210" width="180" height="75" rx="6" fill="#ffffff" filter="url(#shadow)" stroke="#00b4d8" stroke-width="2"/>
+  <rect x="520" y="210" width="180" height="24" rx="6" fill="#ecfeff"/>
+  <rect x="520" y="230" width="180" height="2" fill="#00b4d8" opacity="0.3"/>
+  <text x="610" y="227" text-anchor="middle" font-size="11" font-weight="700" fill="#0891b2">Flow Rate</text>
+  <text x="610" y="252" text-anchor="middle" font-size="11" fill="#1e293b">300–600 L/s normal</text>
+  <text x="610" y="270" text-anchor="middle" font-size="10" fill="#00b4d8" font-weight="600">+10–20% storm runoff</text>
+
+  <!-- Temperature -->
+  <rect x="740" y="210" width="180" height="75" rx="6" fill="#ffffff" filter="url(#shadow)" stroke="#f39c12" stroke-width="2"/>
+  <rect x="740" y="210" width="180" height="24" rx="6" fill="#fffbeb"/>
+  <rect x="740" y="230" width="180" height="2" fill="#f39c12" opacity="0.3"/>
+  <text x="830" y="227" text-anchor="middle" font-size="11" font-weight="700" fill="#d97706">Temperature</text>
+  <text x="830" y="252" text-anchor="middle" font-size="11" fill="#1e293b">22–28 °C normal</text>
+  <text x="830" y="270" text-anchor="middle" font-size="10" fill="#f39c12" font-weight="600">Dips 1–2 °C (cool rain)</text>
+
+  <!-- Row 2: Downstream / derived variables -->
+  <!-- Chlorine Residual -->
+  <rect x="100" y="380" width="180" height="75" rx="6" fill="#ffffff" filter="url(#shadow)" stroke="#2ecc71" stroke-width="2"/>
+  <rect x="100" y="380" width="180" height="24" rx="6" fill="#f0fdf4"/>
+  <rect x="100" y="400" width="180" height="2" fill="#2ecc71" opacity="0.3"/>
+  <text x="190" y="397" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a">Chlorine Residual</text>
+  <text x="190" y="422" text-anchor="middle" font-size="11" fill="#1e293b">1.0–2.0 mg/L normal</text>
+  <text x="190" y="440" text-anchor="middle" font-size="10" fill="#2ecc71" font-weight="600">Faster decay (organics)</text>
+
+  <!-- Filtered Turbidity -->
+  <rect x="390" y="380" width="180" height="75" rx="6" fill="#ffffff" filter="url(#shadow)" stroke="#e67e22" stroke-width="2"/>
+  <rect x="390" y="380" width="180" height="24" rx="6" fill="#fff7ed"/>
+  <rect x="390" y="400" width="180" height="2" fill="#e67e22" opacity="0.3"/>
+  <text x="480" y="397" text-anchor="middle" font-size="11" font-weight="700" fill="#c2410c">Filtered Turbidity</text>
+  <text x="480" y="422" text-anchor="middle" font-size="11" fill="#1e293b">0.02–0.1 NTU normal</text>
+  <text x="480" y="440" text-anchor="middle" font-size="10" fill="#e67e22" font-weight="600">Rises if plant running</text>
+
+  <!-- Reservoir Level -->
+  <rect x="680" y="380" width="180" height="75" rx="6" fill="#ffffff" filter="url(#shadow)" stroke="#9b59b6" stroke-width="2"/>
+  <rect x="680" y="380" width="180" height="24" rx="6" fill="#faf5ff"/>
+  <rect x="680" y="400" width="180" height="2" fill="#9b59b6" opacity="0.3"/>
+  <text x="770" y="397" text-anchor="middle" font-size="11" font-weight="700" fill="#7c3aed">Reservoir Level</text>
+  <text x="770" y="422" text-anchor="middle" font-size="11" fill="#1e293b">60–70% normal</text>
+  <text x="770" y="440" text-anchor="middle" font-size="10" fill="#9b59b6" font-weight="600">Drains if plant shuts down</text>
+
+  <!-- ═══ PLANT SHUTDOWN NODE ═══ -->
+  <rect x="340" y="510" width="280" height="55" rx="8" fill="url(#shutdownGrad)" filter="url(#shadow)" stroke="#7f1d1d" stroke-width="2"/>
+  <text x="480" y="535" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">PLANT SHUTDOWN</text>
+  <text x="480" y="553" text-anchor="middle" font-size="10" fill="#fca5a5">Raw turbidity &gt; 500 NTU triggers auto-shutdown</text>
+
+  <!-- ═══ ARROWS: Rain → Primary variables ═══ -->
+  <!-- Rain → Turbidity -->
+  <path d="M 415 140 Q 300 170 155 210" stroke="#e74c3c" stroke-width="2" fill="none" marker-end="url(#arrowRed)"/>
+  <text x="260" y="168" font-size="9" fill="#e74c3c" font-weight="600" transform="rotate(-18, 260, 168)">spike</text>
+
+  <!-- Rain → pH -->
+  <line x1="460" y1="140" x2="365" y2="208" stroke="#3498db" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="395" y="170" font-size="9" fill="#3498db" font-weight="600" transform="rotate(-28, 395, 170)">drop</text>
+
+  <!-- Rain → Flow -->
+  <line x1="500" y1="140" x2="595" y2="208" stroke="#00b4d8" stroke-width="2" marker-end="url(#arrowCyan)"/>
+  <text x="565" y="170" font-size="9" fill="#00b4d8" font-weight="600" transform="rotate(28, 565, 170)">increase</text>
+
+  <!-- Rain → Temperature -->
+  <path d="M 545 140 Q 660 170 805 210" stroke="#f39c12" stroke-width="2" fill="none" marker-end="url(#arrowAmber)"/>
+  <text x="700" y="168" font-size="9" fill="#f39c12" font-weight="600" transform="rotate(18, 700, 168)">dip</text>
+
+  <!-- ═══ ARROWS: Rain → Chlorine (indirect) ═══ -->
+  <path d="M 420 140 Q 250 280 205 378" stroke="#2ecc71" stroke-width="1.5" fill="none" stroke-dasharray="6,3" marker-end="url(#arrowGreen)"/>
+  <text x="255" y="300" font-size="9" fill="#2ecc71" font-weight="600" font-style="italic" transform="rotate(-65, 255, 300)">indirect (organics)</text>
+
+  <!-- ═══ ARROWS: Turbidity → Filtered Turbidity ═══ -->
+  <path d="M 175 285 Q 300 345 455 378" stroke="#64748b" stroke-width="1.5" fill="none" marker-end="url(#arrowGray)"/>
+  <text x="310" y="330" font-size="9" fill="#64748b">98% removal when running</text>
+
+  <!-- ═══ ARROWS: Flow ↔ Reservoir Level ═══ -->
+  <path d="M 660 285 Q 720 340 745 378" stroke="#64748b" stroke-width="1.5" fill="none" marker-end="url(#arrowGray)"/>
+  <text x="720" y="325" font-size="9" fill="#64748b" transform="rotate(35, 720, 325)">inflow</text>
+
+  <path d="M 730 380 Q 670 340 650 285" stroke="#64748b" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowGray)"/>
+  <text x="665" y="340" font-size="9" fill="#64748b" transform="rotate(-50, 665, 340)">demand</text>
+
+  <!-- ═══ ARROW: Turbidity > 500 → PLANT SHUTDOWN ═══ -->
+  <line x1="130" y1="285" x2="380" y2="510" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowDanger)"/>
+  <rect x="165" y="385" width="115" height="22" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="222" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#dc2626">&gt; 500 NTU</text>
+
+  <!-- ═══ ARROW: SHUTDOWN → Reservoir drains ═══ -->
+  <path d="M 620 538 Q 680 520 745 458" stroke="#dc2626" stroke-width="2" fill="none" stroke-dasharray="6,3" marker-end="url(#arrowDanger)"/>
+  <text x="700" y="498" font-size="9" fill="#dc2626" font-weight="600">no inflow, demand continues</text>
+
+  <!-- ═══ REFERENCE TABLE ═══ -->
+  <rect x="40" y="590" width="880" height="215" rx="6" fill="#ffffff" filter="url(#shadow)" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="480" y="614" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">Variable Reference</text>
+
+  <!-- Table header -->
+  <rect x="50" y="625" width="860" height="22" rx="3" fill="#f1f5f9"/>
+  <text x="145" y="640" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">Variable</text>
+  <text x="310" y="640" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">Normal Range</text>
+  <text x="480" y="640" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">Rain Effect</text>
+  <text x="650" y="640" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">Recovery</text>
+  <text x="830" y="640" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">Model</text>
+
+  <!-- Row 1: Raw Turbidity -->
+  <circle cx="62" cy="663" r="5" fill="#e74c3c"/>
+  <text x="75" y="667" font-size="10" fill="#1e293b" font-weight="600">Raw Turbidity</text>
+  <text x="310" y="667" text-anchor="middle" font-size="10" fill="#64748b">2–5 NTU</text>
+  <text x="480" y="667" text-anchor="middle" font-size="10" fill="#e74c3c">Spike 200–800 NTU</text>
+  <text x="650" y="667" text-anchor="middle" font-size="10" fill="#64748b">Exp. decay, hours</text>
+  <text x="830" y="667" text-anchor="middle" font-size="10" fill="#94a3b8">OU + rain pulse</text>
+  <line x1="50" y1="675" x2="910" y2="675" stroke="#f1f5f9" stroke-width="1"/>
+
+  <!-- Row 2: pH -->
+  <circle cx="62" cy="690" r="5" fill="#3498db"/>
+  <text x="75" y="694" font-size="10" fill="#1e293b" font-weight="600">pH Level</text>
+  <text x="310" y="694" text-anchor="middle" font-size="10" fill="#64748b">7.0–7.4</text>
+  <text x="480" y="694" text-anchor="middle" font-size="10" fill="#3498db">Drops 0.2–0.8</text>
+  <text x="650" y="694" text-anchor="middle" font-size="10" fill="#64748b">Tracks turbidity decay</text>
+  <text x="830" y="694" text-anchor="middle" font-size="10" fill="#94a3b8">OU + diurnal</text>
+  <line x1="50" y1="702" x2="910" y2="702" stroke="#f1f5f9" stroke-width="1"/>
+
+  <!-- Row 3: Chlorine -->
+  <circle cx="62" cy="717" r="5" fill="#2ecc71"/>
+  <text x="75" y="721" font-size="10" fill="#1e293b" font-weight="600">Chlorine Residual</text>
+  <text x="310" y="721" text-anchor="middle" font-size="10" fill="#64748b">1.0–2.0 mg/L</text>
+  <text x="480" y="721" text-anchor="middle" font-size="10" fill="#2ecc71">Faster decay (2x rate)</text>
+  <text x="650" y="721" text-anchor="middle" font-size="10" fill="#64748b">Next dose pulse (15m)</text>
+  <text x="830" y="721" text-anchor="middle" font-size="10" fill="#94a3b8">Sawtooth dosing</text>
+  <line x1="50" y1="729" x2="910" y2="729" stroke="#f1f5f9" stroke-width="1"/>
+
+  <!-- Row 4: Flow Rate -->
+  <circle cx="62" cy="744" r="5" fill="#00b4d8"/>
+  <text x="75" y="748" font-size="10" fill="#1e293b" font-weight="600">Flow Rate</text>
+  <text x="310" y="748" text-anchor="middle" font-size="10" fill="#64748b">300–600 L/s</text>
+  <text x="480" y="748" text-anchor="middle" font-size="10" fill="#00b4d8">+10–20% increase</text>
+  <text x="650" y="748" text-anchor="middle" font-size="10" fill="#64748b">Tracks turbidity decay</text>
+  <text x="830" y="748" text-anchor="middle" font-size="10" fill="#94a3b8">OU + diurnal</text>
+  <line x1="50" y1="756" x2="910" y2="756" stroke="#f1f5f9" stroke-width="1"/>
+
+  <!-- Row 5: Reservoir Level -->
+  <circle cx="62" cy="771" r="5" fill="#9b59b6"/>
+  <text x="75" y="775" font-size="10" fill="#1e293b" font-weight="600">Reservoir Level</text>
+  <text x="310" y="775" text-anchor="middle" font-size="10" fill="#64748b">60–70%</text>
+  <text x="480" y="775" text-anchor="middle" font-size="10" fill="#9b59b6">Drains if shutdown</text>
+  <text x="650" y="775" text-anchor="middle" font-size="10" fill="#64748b">~3.6%/hr drain rate</text>
+  <text x="830" y="775" text-anchor="middle" font-size="10" fill="#94a3b8">Integrator</text>
+  <line x1="50" y1="783" x2="910" y2="783" stroke="#f1f5f9" stroke-width="1"/>
+
+  <!-- Row 6: Temperature -->
+  <circle cx="62" cy="798" r="5" fill="#f39c12"/>
+  <text x="75" y="802" font-size="10" fill="#1e293b" font-weight="600">Temperature</text>
+  <text x="310" y="802" text-anchor="middle" font-size="10" fill="#64748b">22–28 °C</text>
+  <text x="480" y="802" text-anchor="middle" font-size="10" fill="#f39c12">Dips 1–2 °C</text>
+  <text x="650" y="802" text-anchor="middle" font-size="10" fill="#64748b">Tracks turbidity decay</text>
+  <text x="830" y="802" text-anchor="middle" font-size="10" fill="#94a3b8">OU + diurnal</text>
+</svg>

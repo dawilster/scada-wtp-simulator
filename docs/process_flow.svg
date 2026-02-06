@@ -1,0 +1,222 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 520" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="waterGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="treatedGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <linearGradient id="pipeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+    <filter id="ds">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/>
+    </filter>
+    <marker id="flowArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#0369a1"/>
+    </marker>
+    <marker id="flowArrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#16a34a"/>
+    </marker>
+    <!-- Pump symbol -->
+    <symbol id="pump" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="17" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <polygon points="10,26 20,10 30,26" fill="#16a34a"/>
+      <text x="20" y="36" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="600">P</text>
+    </symbol>
+    <!-- Valve symbol -->
+    <symbol id="valve" viewBox="0 0 30 30">
+      <polygon points="0,5 15,15 0,25" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <polygon points="30,5 15,15 30,25" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    </symbol>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1050" height="520" rx="8" fill="#f0f9ff"/>
+
+  <!-- Title -->
+  <text x="525" y="32" text-anchor="middle" font-size="17" font-weight="700" fill="#0c4a6e">Tunnel Hill WTP — Process Flow (HMI Overview)</text>
+  <text x="525" y="50" text-anchor="middle" font-size="11" fill="#64748b">Tunnel Hill, Cairns — Capacity: 400–1200 L/s (35–120 ML/day)</text>
+
+  <!-- ═══ STAGE 1: SOURCE ═══ -->
+  <!-- Copperlode Dam -->
+  <rect x="20" y="85" width="130" height="90" rx="8" fill="#1e40af" filter="url(#ds)"/>
+  <text x="85" y="115" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Copperlode</text>
+  <text x="85" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Falls Dam</text>
+  <text x="85" y="152" text-anchor="middle" font-size="9" fill="#93c5fd">38,400 ML capacity</text>
+  <text x="85" y="165" text-anchor="middle" font-size="9" fill="#93c5fd">Lake Morris</text>
+
+  <!-- Gravity flow arrow -->
+  <line x1="150" y1="130" x2="186" y2="130" stroke="#0369a1" stroke-width="2.5" marker-end="url(#flowArrow)"/>
+  <text x="168" y="122" text-anchor="middle" font-size="8" fill="#0369a1">Gravity</text>
+
+  <!-- Crystal Cascades Intake -->
+  <rect x="195" y="95" width="120" height="70" rx="6" fill="#ffffff" filter="url(#ds)" stroke="#0ea5e9" stroke-width="1.5"/>
+  <text x="255" y="118" text-anchor="middle" font-size="11" font-weight="600" fill="#0c4a6e">Crystal</text>
+  <text x="255" y="132" text-anchor="middle" font-size="11" font-weight="600" fill="#0c4a6e">Cascades</text>
+  <text x="255" y="148" text-anchor="middle" font-size="9" fill="#64748b">Intake &amp; Screen</text>
+
+  <!-- Pipe to treatment -->
+  <line x1="315" y1="130" x2="370" y2="130" stroke="#0369a1" stroke-width="2.5" marker-end="url(#flowArrow)"/>
+
+  <!-- Intake Pump -->
+  <use href="#pump" x="340" y="100" width="35" height="35"/>
+  <text x="358" y="148" text-anchor="middle" font-size="8" fill="#16a34a">Intake</text>
+
+  <!-- ═══ STAGE 2: TREATMENT TRAIN ═══ -->
+  <!-- Treatment background -->
+  <rect x="375" y="70" width="380" height="185" rx="8" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="565" y="88" text-anchor="middle" font-size="10" font-weight="600" fill="#0d9488" letter-spacing="1.5">TREATMENT TRAIN</text>
+
+  <!-- Coagulation / Flocculation -->
+  <rect x="390" y="100" width="105" height="65" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#14b8a6" stroke-width="1.5"/>
+  <text x="442" y="122" text-anchor="middle" font-size="10" font-weight="600" fill="#0f766e">Coagulation</text>
+  <text x="442" y="135" text-anchor="middle" font-size="10" font-weight="600" fill="#0f766e">&amp; Floc</text>
+  <text x="442" y="152" text-anchor="middle" font-size="8" fill="#64748b">Alum + Polymer</text>
+
+  <!-- Alum dosing pump -->
+  <use href="#pump" x="408" y="170" width="28" height="28"/>
+  <text x="422" y="205" text-anchor="middle" font-size="7" fill="#16a34a">Alum</text>
+
+  <!-- Arrow coag → filter -->
+  <line x1="495" y1="132" x2="528" y2="132" stroke="#0369a1" stroke-width="2" marker-end="url(#flowArrow)"/>
+
+  <!-- Filtration -->
+  <rect x="535" y="100" width="105" height="65" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#14b8a6" stroke-width="1.5"/>
+  <text x="587" y="120" text-anchor="middle" font-size="10" font-weight="600" fill="#0f766e">Filtration</text>
+  <text x="587" y="135" text-anchor="middle" font-size="8" fill="#64748b">Sand / Gravel</text>
+  <text x="587" y="148" text-anchor="middle" font-size="8" fill="#64748b">Anthracite</text>
+
+  <!-- Backwash valve on filter -->
+  <use href="#valve" x="565" y="170" width="22" height="22"/>
+  <text x="576" y="200" text-anchor="middle" font-size="7" fill="#2563eb">Backwash</text>
+
+  <!-- Arrow filter → chlorination -->
+  <line x1="640" y1="132" x2="670" y2="132" stroke="#0369a1" stroke-width="2" marker-end="url(#flowArrow)"/>
+
+  <!-- Chlorination -->
+  <rect x="675" y="100" width="70" height="65" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#14b8a6" stroke-width="1.5"/>
+  <text x="710" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#0f766e">Chlorine</text>
+  <text x="710" y="140" text-anchor="middle" font-size="10" font-weight="600" fill="#0f766e">Dosing</text>
+  <text x="710" y="155" text-anchor="middle" font-size="8" fill="#64748b">Disinfection</text>
+
+  <!-- Cl2 pump -->
+  <use href="#pump" x="693" y="170" width="28" height="28"/>
+  <text x="707" y="205" text-anchor="middle" font-size="7" fill="#16a34a">Cl₂</text>
+
+  <!-- ═══ STAGE 3: STORAGE & DISTRIBUTION ═══ -->
+  <!-- Arrow to clear water storage -->
+  <line x1="745" y1="132" x2="795" y2="132" stroke="#0369a1" stroke-width="2.5" marker-end="url(#flowArrow)"/>
+
+  <!-- Clear Water Storage / Reservoir -->
+  <rect x="802" y="85" width="110" height="90" rx="8" fill="#0ea5e9" filter="url(#ds)"/>
+  <text x="857" y="115" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Reservoir</text>
+  <text x="857" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Network</text>
+  <text x="857" y="152" text-anchor="middle" font-size="9" fill="#bae6fd">72 reservoirs</text>
+  <text x="857" y="165" text-anchor="middle" font-size="9" fill="#bae6fd">across Cairns</text>
+
+  <!-- Arrow to distribution -->
+  <line x1="912" y1="130" x2="950" y2="130" stroke="#16a34a" stroke-width="2.5" marker-end="url(#flowArrowGreen)"/>
+
+  <!-- Distribution -->
+  <rect x="957" y="105" width="75" height="50" rx="6" fill="#dcfce7" filter="url(#ds)" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="995" y="128" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">To</text>
+  <text x="995" y="142" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">Cairns</text>
+
+  <!-- ═══ INSTRUMENTATION LAYER ═══ -->
+  <text x="525" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#0c4a6e">Instrumentation Points</text>
+  <line x1="100" y1="258" x2="950" y2="258" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Instrument tags - Row 1 -->
+  <!-- Raw Turbidity -->
+  <rect x="40" y="275" width="145" height="72" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#ef4444" stroke-width="1.5"/>
+  <rect x="40" y="275" width="145" height="22" rx="5" fill="#fef2f2"/>
+  <rect x="40" y="292" width="145" height="2" fill="#ef4444" opacity="0.3"/>
+  <text x="112" y="291" text-anchor="middle" font-size="9" font-weight="700" fill="#dc2626">TIT-001 RAW TURBIDITY</text>
+  <text x="112" y="316" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">15.2</text>
+  <text x="112" y="336" text-anchor="middle" font-size="9" fill="#64748b">NTU   |   Range: 0–1000</text>
+  <!-- Connection line up -->
+  <line x1="112" y1="275" x2="112" y2="220" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="112" y1="220" x2="255" y2="175" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- pH -->
+  <rect x="200" y="275" width="145" height="72" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#f59e0b" stroke-width="1.5"/>
+  <rect x="200" y="275" width="145" height="22" rx="5" fill="#fffbeb"/>
+  <rect x="200" y="292" width="145" height="2" fill="#f59e0b" opacity="0.3"/>
+  <text x="272" y="291" text-anchor="middle" font-size="9" font-weight="700" fill="#d97706">AIT-002 pH LEVEL</text>
+  <text x="272" y="316" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">7.20</text>
+  <text x="272" y="336" text-anchor="middle" font-size="9" fill="#64748b">pH   |   Range: 0–14</text>
+
+  <!-- Flow Rate -->
+  <rect x="360" y="275" width="145" height="72" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#3b82f6" stroke-width="1.5"/>
+  <rect x="360" y="275" width="145" height="22" rx="5" fill="#eff6ff"/>
+  <rect x="360" y="292" width="145" height="2" fill="#3b82f6" opacity="0.3"/>
+  <text x="432" y="291" text-anchor="middle" font-size="9" font-weight="700" fill="#2563eb">FIT-003 RAW FLOW</text>
+  <text x="432" y="316" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">823.5</text>
+  <text x="432" y="336" text-anchor="middle" font-size="9" fill="#64748b">L/s   |   Range: 0–1200</text>
+
+  <!-- Filtered Turbidity -->
+  <rect x="520" y="275" width="145" height="72" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#22c55e" stroke-width="1.5"/>
+  <rect x="520" y="275" width="145" height="22" rx="5" fill="#f0fdf4"/>
+  <rect x="520" y="292" width="145" height="2" fill="#22c55e" opacity="0.3"/>
+  <text x="592" y="291" text-anchor="middle" font-size="9" font-weight="700" fill="#16a34a">TIT-004 FILT. TURBIDITY</text>
+  <text x="592" y="316" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">0.02</text>
+  <text x="592" y="336" text-anchor="middle" font-size="9" fill="#64748b">NTU   |   Range: 0–10</text>
+
+  <!-- Chlorine Residual -->
+  <rect x="680" y="275" width="145" height="72" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#a855f7" stroke-width="1.5"/>
+  <rect x="680" y="275" width="145" height="22" rx="5" fill="#faf5ff"/>
+  <rect x="680" y="292" width="145" height="2" fill="#a855f7" opacity="0.3"/>
+  <text x="752" y="291" text-anchor="middle" font-size="9" font-weight="700" fill="#9333ea">AIT-005 CHLORINE</text>
+  <text x="752" y="316" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">1.50</text>
+  <text x="752" y="336" text-anchor="middle" font-size="9" fill="#64748b">mg/L   |   Range: 0–5</text>
+
+  <!-- Reservoir Level -->
+  <rect x="840" y="275" width="145" height="72" rx="5" fill="#ffffff" filter="url(#ds)" stroke="#06b6d4" stroke-width="1.5"/>
+  <rect x="840" y="275" width="145" height="22" rx="5" fill="#ecfeff"/>
+  <rect x="840" y="292" width="145" height="2" fill="#06b6d4" opacity="0.3"/>
+  <text x="912" y="291" text-anchor="middle" font-size="9" font-weight="700" fill="#0891b2">LIT-006 RESERVOIR LVL</text>
+  <text x="912" y="316" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">65.0</text>
+  <text x="912" y="336" text-anchor="middle" font-size="9" fill="#64748b">%   |   Range: 0–100</text>
+
+  <!-- ═══ EQUIPMENT STATUS ROW ═══ -->
+  <text x="525" y="385" text-anchor="middle" font-size="14" font-weight="700" fill="#0c4a6e">Equipment Status</text>
+  <line x1="100" y1="393" x2="950" y2="393" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Intake Pump status -->
+  <rect x="80" y="405" width="175" height="55" rx="5" fill="#dcfce7" filter="url(#ds)" stroke="#16a34a" stroke-width="2"/>
+  <circle cx="102" cy="432" r="8" fill="#22c55e"/>
+  <text x="120" y="425" font-size="10" font-weight="700" fill="#166534">Intake Pump</text>
+  <text x="120" y="440" font-size="9" fill="#16a34a">● RUNNING</text>
+  <text x="120" y="453" font-size="8" fill="#64748b">Coil: 00001 | DI: 10001</text>
+
+  <!-- Alum Pump -->
+  <rect x="275" y="405" width="175" height="55" rx="5" fill="#dcfce7" filter="url(#ds)" stroke="#16a34a" stroke-width="2"/>
+  <circle cx="297" cy="432" r="8" fill="#22c55e"/>
+  <text x="315" y="425" font-size="10" font-weight="700" fill="#166534">Alum Dosing Pump</text>
+  <text x="315" y="440" font-size="9" fill="#16a34a">● RUNNING</text>
+  <text x="315" y="453" font-size="8" fill="#64748b">Coil: 00002 | DI: 10002</text>
+
+  <!-- Chlorine Pump -->
+  <rect x="470" y="405" width="175" height="55" rx="5" fill="#dcfce7" filter="url(#ds)" stroke="#16a34a" stroke-width="2"/>
+  <circle cx="492" cy="432" r="8" fill="#22c55e"/>
+  <text x="510" y="425" font-size="10" font-weight="700" fill="#166534">Chlorine Pump</text>
+  <text x="510" y="440" font-size="9" fill="#16a34a">● RUNNING</text>
+  <text x="510" y="453" font-size="8" fill="#64748b">Coil: 00003 | DI: 10003</text>
+
+  <!-- Backwash Valve -->
+  <rect x="665" y="405" width="175" height="55" rx="5" fill="#fff7ed" filter="url(#ds)" stroke="#94a3b8" stroke-width="2"/>
+  <circle cx="687" cy="432" r="8" fill="#94a3b8"/>
+  <text x="705" y="425" font-size="10" font-weight="700" fill="#475569">Backwash Valve</text>
+  <text x="705" y="440" font-size="9" fill="#64748b">○ CLOSED</text>
+  <text x="705" y="453" font-size="8" fill="#64748b">Coil: 00004 | DI: 10004</text>
+
+  <!-- Plant status banner -->
+  <rect x="80" y="475" width="760" height="30" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <circle cx="100" cy="490" r="6" fill="#22c55e"/>
+  <text x="115" y="494" font-size="11" font-weight="700" fill="#166534">PLANT STATUS: RUNNING</text>
+  <text x="370" y="494" font-size="10" fill="#64748b">Mode: AUTO   |   Runtime: 1,247 hrs   |   Daily Flow: 82.4 ML   |   Backwash Cycles: 3</text>
+</svg>

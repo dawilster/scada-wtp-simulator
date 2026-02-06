@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 820" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="level3bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3a5c"/>
+      <stop offset="100%" stop-color="#1e4d7a"/>
+    </linearGradient>
+    <linearGradient id="level2bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2e5930"/>
+      <stop offset="100%" stop-color="#3a7340"/>
+    </linearGradient>
+    <linearGradient id="level1bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6b3a1f"/>
+      <stop offset="100%" stop-color="#8a4c2a"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrowDown" markerWidth="10" markerHeight="7" refX="5" refY="7" orient="auto">
+      <polygon points="0,0 10,0 5,7" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="820" rx="8" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Water Treatment Plant Simulator — Architecture</text>
+
+  <!-- ═══ LEVEL 3: YOUR SCADA SYSTEM ═══ -->
+  <rect x="30" y="55" width="840" height="280" rx="6" fill="url(#level3bg)" stroke="#0f2d4a" stroke-width="1.5"/>
+  <text x="450" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#93c5fd" letter-spacing="2">LEVEL 3 — YOUR SCADA SYSTEM</text>
+
+  <!-- SCADA Platform -->
+  <rect x="60" y="98" width="320" height="80" rx="5" fill="#ffffff" filter="url(#shadow)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="220" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">Your SCADA Platform</text>
+  <text x="220" y="141" text-anchor="middle" font-size="10" fill="#64748b">Ignition / GeoSCADA / any Modbus TCP client</text>
+  <text x="220" y="158" text-anchor="middle" font-size="10" fill="#64748b">HMI screens · Historian · Alarm management · Trends</text>
+
+  <!-- Web Dashboard (built-in) — dashed border for "included alternative" -->
+  <rect x="420" y="98" width="300" height="80" rx="5" fill="#ffffff" filter="url(#shadow)" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="570" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">Web Dashboard (Built-in)</text>
+  <text x="570" y="141" text-anchor="middle" font-size="10" fill="#64748b">Lightweight alternative — no install needed</text>
+  <text x="570" y="158" text-anchor="middle" font-size="10" fill="#64748b">http://localhost:8080</text>
+
+  <!-- Modbus TCP Client -->
+  <rect x="140" y="198" width="200" height="52" rx="5" fill="#dbeafe" filter="url(#shadow)" stroke="#3b82f6" stroke-width="1"/>
+  <text x="240" y="222" text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">Modbus TCP Client</text>
+  <text x="240" y="237" text-anchor="middle" font-size="10" fill="#3b82f6">Reads registers, writes coils</text>
+
+  <!-- WebSocket for dashboard -->
+  <rect x="480" y="198" width="200" height="52" rx="5" fill="#dbeafe" filter="url(#shadow)" stroke="#3b82f6" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="580" y="222" text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">WebSocket (port 8081)</text>
+  <text x="580" y="237" text-anchor="middle" font-size="10" fill="#3b82f6">1 Hz JSON data push</text>
+
+  <!-- Internal connections L3 -->
+  <line x1="220" y1="178" x2="240" y2="198" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="570" y1="178" x2="580" y2="198" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ═══ CONNECTION LINE L3 → L2 ═══ -->
+  <line x1="330" y1="335" x2="330" y2="385" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowDown)"/>
+  <rect x="345" y="345" width="210" height="24" rx="4" fill="#e2e8f0"/>
+  <text x="450" y="362" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">Ethernet — TCP Port 502</text>
+  <text x="450" y="376" text-anchor="middle" font-size="10" fill="#64748b">(Modbus TCP)</text>
+
+  <!-- ═══ LEVEL 2: RTU SIMULATOR ═══ -->
+  <rect x="30" y="390" width="840" height="160" rx="6" fill="url(#level2bg)" stroke="#1a4721" stroke-width="1.5"/>
+  <text x="450" y="415" text-anchor="middle" font-size="14" font-weight="700" fill="#86efac" letter-spacing="2">LEVEL 2 — RTU SIMULATOR</text>
+
+  <!-- Python Bridge box -->
+  <rect x="60" y="430" width="780" height="100" rx="5" fill="#ffffff" filter="url(#shadow)" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="450" y="458" text-anchor="middle" font-size="14" font-weight="700" fill="#166534">Python Modbus TCP Server (pymodbus)</text>
+  <text x="450" y="476" text-anchor="middle" font-size="11" fill="#64748b">rtu_bridge.py — simulates SCADAPack RTU behaviour</text>
+
+  <!-- Bullet points inside Python box -->
+  <circle cx="120" cy="499" r="3" fill="#22c55e"/>
+  <text x="130" y="503" font-size="10" fill="#334155">Reads simulated sensor data</text>
+  <circle cx="330" cy="499" r="3" fill="#22c55e"/>
+  <text x="340" y="503" font-size="10" fill="#334155">Exposes Modbus registers</text>
+  <circle cx="530" cy="499" r="3" fill="#22c55e"/>
+  <text x="540" y="503" font-size="10" fill="#334155">Runs plant state machine</text>
+  <circle cx="720" cy="499" r="3" fill="#22c55e"/>
+  <text x="730" y="503" font-size="10" fill="#334155">Generates alarms</text>
+
+  <!-- ═══ CONNECTION LINE L2 → L1 ═══ -->
+  <line x1="330" y1="550" x2="330" y2="600" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowDown)"/>
+  <rect x="345" y="558" width="200" height="24" rx="4" fill="#e2e8f0"/>
+  <text x="445" y="575" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">Python (in-process)</text>
+
+  <!-- ═══ LEVEL 1: PROCESS SIMULATOR ═══ -->
+  <rect x="30" y="605" width="840" height="200" rx="6" fill="url(#level1bg)" stroke="#4a2810" stroke-width="1.5"/>
+  <text x="450" y="630" text-anchor="middle" font-size="14" font-weight="700" fill="#fed7aa" letter-spacing="2">LEVEL 1 — PROCESS SIMULATOR</text>
+
+  <!-- Process Simulator box -->
+  <rect x="60" y="645" width="500" height="145" rx="5" fill="#ffffff" filter="url(#shadow)" stroke="#f97316" stroke-width="1.5"/>
+  <text x="310" y="668" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">Process Data Generator (wtp_process_sim.py)</text>
+
+  <!-- Sensor models column -->
+  <text x="78" y="690" font-size="10" font-weight="600" fill="#1e293b">Sensor Models</text>
+  <text x="78" y="706" font-size="9" fill="#64748b">Ornstein-Uhlenbeck mean-reverting noise</text>
+  <text x="78" y="720" font-size="9" fill="#64748b">Diurnal flow &amp; temperature patterns</text>
+  <text x="78" y="734" font-size="9" fill="#64748b">Poisson-triggered rain event cascade</text>
+  <text x="78" y="748" font-size="9" fill="#64748b">Sawtooth chlorine dosing with decay</text>
+  <text x="78" y="762" font-size="9" fill="#64748b">Time compression via --speed flag</text>
+
+  <!-- Output column -->
+  <text x="340" y="690" font-size="10" font-weight="600" fill="#1e293b">Output (7 variables, 1 Hz)</text>
+  <text x="340" y="706" font-size="9" fill="#64748b">Raw turbidity (NTU)</text>
+  <text x="340" y="720" font-size="9" fill="#64748b">pH</text>
+  <text x="340" y="734" font-size="9" fill="#64748b">Chlorine residual (mg/L)</text>
+  <text x="340" y="748" font-size="9" fill="#64748b">Flow rate (L/s)</text>
+  <text x="340" y="762" font-size="9" fill="#64748b">Reservoir level (%) · Temp (°C) · Filtered turb</text>
+
+  <!-- Real-world equivalent box -->
+  <rect x="600" y="645" width="250" height="145" rx="5" fill="#fef3c7" filter="url(#shadow)" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="725" y="668" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Real-World Equivalent</text>
+  <text x="618" y="692" font-size="9" fill="#78350f">In the actual Tunnel Hill plant:</text>
+  <text x="618" y="710" font-size="9" fill="#64748b">&#x2022; 4-20mA transmitters &#x2192; PLC analog inputs</text>
+  <text x="618" y="724" font-size="9" fill="#64748b">&#x2022; Hach/E+H turbidity, pH, Cl&#x2082; analysers</text>
+  <text x="618" y="738" font-size="9" fill="#64748b">&#x2022; Mag flow meters (Endress+Hauser)</text>
+  <text x="618" y="752" font-size="9" fill="#64748b">&#x2022; Motorised valves, VSD-driven pumps</text>
+  <text x="618" y="766" font-size="9" fill="#64748b">&#x2022; SCADAPack RTU / Modicon PLC</text>
+  <text x="618" y="780" font-size="9" fill="#64748b">&#x2022; Trio/4RF radio telemetry to SCADA</text>
+</svg>

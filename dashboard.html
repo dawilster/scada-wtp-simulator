@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tunnel Hill WTP — Process Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #121929;
+    --surface2: #1a2235;
+    --border: #2a3450;
+    --text: #c8d6e5;
+    --text-dim: #6b7a8d;
+    --accent: #00b4d8;
+    --accent2: #0077b6;
+    --good: #2ecc71;
+    --warn: #f39c12;
+    --danger: #e74c3c;
+    --white: #ecf0f1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  header h1 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+  header h1 span { color: var(--accent); }
+  .header-info {
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .header-info .val { color: var(--accent); font-weight: 600; }
+  #conn-status {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--danger);
+    display: inline-block;
+    margin-right: 6px;
+    transition: background 0.3s;
+  }
+  #conn-status.connected { background: var(--good); }
+
+  /* ── LAYOUT ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  @media (max-width: 1100px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+  .card h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .card.span2 { grid-column: span 2; }
+  .card.span3 { grid-column: span 3; }
+  @media (max-width: 1100px) { .card.span3 { grid-column: span 2; } }
+  @media (max-width: 700px) { .card.span2, .card.span3 { grid-column: span 1; } }
+
+  /* ── GAUGE VALUES ── */
+  .gauge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .gauge {
+    text-align: center;
+    padding: 12px 8px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .gauge.alarm { border-color: var(--danger); }
+  .gauge.warning { border-color: var(--warn); }
+  .gauge .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .gauge .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .gauge .unit {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .gauge .value.danger { color: var(--danger); }
+  .gauge .value.warning { color: var(--warn); }
+  .gauge .value.good { color: var(--good); }
+
+  /* ── PLANT STATE ── */
+  .state-machine {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .state-node {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .state-node.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(0, 180, 216, 0.3);
+  }
+  .state-node.fault {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+  }
+  .state-arrow {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  /* ── ALARMS ── */
+  .alarm-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 140px;
+    overflow-y: auto;
+  }
+  .alarm-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    background: rgba(231, 76, 60, 0.1);
+    border-left: 3px solid var(--danger);
+  }
+  .alarm-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--danger);
+    animation: blink 1s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.3; } }
+  .no-alarms {
+    color: var(--good);
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  /* ── CHARTS ── */
+  .chart-container {
+    height: 160px;
+    position: relative;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:hover {
+    background: var(--accent2);
+    border-color: var(--accent);
+    color: white;
+  }
+  .btn.danger:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+  }
+  .btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+
+  .coil-controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .coil-btn {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .coil-btn.on {
+    background: rgba(46, 204, 113, 0.15);
+    border-color: var(--good);
+    color: var(--good);
+  }
+  .coil-btn .indicator {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    margin-right: 6px;
+    transition: background 0.2s;
+  }
+  .coil-btn.on .indicator { background: var(--good); }
+
+  /* ── HELPER TEXT ── */
+  .help-text {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .btn[title], .coil-btn[title] {
+    position: relative;
+  }
+  .btn-desc {
+    display: block;
+    font-size: 9px;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span>TUNNEL HILL</span> WTP &mdash; Process Dashboard</h1>
+  <div class="header-info">
+    <span><span id="conn-status"></span> <span id="conn-text">Connecting...</span></span>
+    <span>Sim Time: <span class="val" id="sim-time">--:--</span></span>
+    <span>Day: <span class="val" id="sim-day">0</span></span>
+    <span>Speed: <span class="val" id="sim-speed">1</span>x</span>
+  </div>
+</header>
+
+<div class="grid">
+
+  <!-- LIVE GAUGES -->
+  <div class="card span2">
+    <h2>Live Process Values</h2>
+    <p class="help-text">Real-time sensor readings. Red border = alarm, orange = warning. Normal: turbidity 2-5 NTU, pH 6.5-8.5, chlorine 0.2-4.0 mg/L, reservoir 20-95%.</p>
+    <div class="gauge-grid">
+      <div class="gauge" id="g-turb">
+        <div class="label">Raw Turbidity</div>
+        <div class="value" id="v-turb">--</div>
+        <div class="unit">NTU</div>
+      </div>
+      <div class="gauge" id="g-ph">
+        <div class="label">pH</div>
+        <div class="value" id="v-ph">--</div>
+        <div class="unit">pH</div>
+      </div>
+      <div class="gauge" id="g-cl2">
+        <div class="label">Chlorine</div>
+        <div class="value" id="v-cl2">--</div>
+        <div class="unit">mg/L</div>
+      </div>
+      <div class="gauge" id="g-flow">
+        <div class="label">Raw Flow</div>
+        <div class="value" id="v-flow">--</div>
+        <div class="unit">L/s</div>
+      </div>
+      <div class="gauge" id="g-level">
+        <div class="label">Reservoir</div>
+        <div class="value" id="v-level">--</div>
+        <div class="unit">%</div>
+      </div>
+      <div class="gauge" id="g-temp">
+        <div class="label">Temperature</div>
+        <div class="value" id="v-temp">--</div>
+        <div class="unit">&deg;C</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANT STATE -->
+  <div class="card">
+    <h2>Plant State</h2>
+    <p class="help-text">State machine: enable Auto Mode + Intake Pump to start. Turbidity &gt;500 NTU triggers automatic shutdown.</p>
+    <div class="state-machine" id="state-machine">
+      <div class="state-node" data-state="0">Offline</div>
+      <span class="state-arrow">&rarr;</span>
+      <div class="state-node" data-state="1">Starting</div>
+      <span class="state-arrow">&rarr;</span>
+      <div class="state-node" data-state="2">Running</div>
+      <span class="state-arrow">&rarr;</span>
+      <div class="state-node" data-state="3">Shutdown</div>
+      <div class="state-node" data-state="4">Backwash</div>
+      <div class="state-node" data-state="5">Fault</div>
+    </div>
+    <div style="margin-top: 16px;">
+      <h2>Active Alarms</h2>
+      <div class="alarm-list" id="alarm-list">
+        <div class="no-alarms">No active alarms</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TURBIDITY CHART -->
+  <div class="card span2">
+    <h2>Turbidity Trend</h2>
+    <div class="chart-container"><canvas id="chart-turb"></canvas></div>
+  </div>
+
+  <!-- FLOW CHART -->
+  <div class="card">
+    <h2>Flow Trend</h2>
+    <div class="chart-container"><canvas id="chart-flow"></canvas></div>
+  </div>
+
+  <!-- PH + CL2 CHART -->
+  <div class="card">
+    <h2>pH &amp; Chlorine Trend</h2>
+    <div class="chart-container"><canvas id="chart-ph-cl2"></canvas></div>
+  </div>
+
+  <!-- LEVEL + TEMP CHART -->
+  <div class="card">
+    <h2>Level &amp; Temperature</h2>
+    <div class="chart-container"><canvas id="chart-level-temp"></canvas></div>
+  </div>
+
+  <!-- SCENARIO CONTROLS -->
+  <div class="card">
+    <h2>Scenario Controls</h2>
+    <p class="help-text">Inject simulated events into the process. Rain events cause correlated sensor changes across turbidity, pH, flow and temperature &mdash; just like a real tropical storm hitting the Freshwater Creek catchment.</p>
+    <div class="controls">
+      <button class="btn" onclick="sendCmd({action:'rain',peak:400})" title="Simulate moderate rain. Turbidity spikes to ~400 NTU over minutes, then decays over hours. pH drops, flow increases, temp dips.">Rain (400 NTU)</button>
+      <button class="btn danger" onclick="sendCmd({action:'rain',peak:700})" title="Simulate heavy wet-season storm. Turbidity spike to ~700 NTU will likely trigger auto-shutdown (threshold 500 NTU). Plant goes offline until turbidity clears and you restart.">Heavy Rain (700)</button>
+      <button class="btn" id="btn-dose" onclick="toggleDose()" title="Toggle chlorine dosing pump. When off, chlorine residual decays toward zero, triggering a low-chlorine alarm. Turn back on to resume dosing.">Dose Off</button>
+      <button class="btn danger" onclick="sendCmd({action:'fault',sensor:'chlorine'})" title="Simulate chlorine dosing pump failure. Residual drops sharply. Low chlorine alarm will fire.">Fault: Cl2</button>
+      <button class="btn danger" onclick="sendCmd({action:'fault',sensor:'flow'})" title="Simulate flow sensor failure. Flow reads zero, affecting reservoir level calculation.">Fault: Flow</button>
+      <button class="btn danger" onclick="sendCmd({action:'fault',sensor:'turbidity'})" title="Simulate turbidity sensor failure. Reads 900+ NTU, triggering high-turbidity alarm and auto-shutdown.">Fault: Turb</button>
+      <button class="btn" onclick="sendCmd({action:'clear',sensor:'chlorine'})" title="Clear the chlorine sensor fault. Dosing resumes normal operation.">Clear: Cl2</button>
+      <button class="btn" onclick="sendCmd({action:'clear',sensor:'flow'})" title="Clear the flow sensor fault. Flow readings return to normal.">Clear: Flow</button>
+      <button class="btn" onclick="sendCmd({action:'clear',sensor:'turbidity'})" title="Clear the turbidity sensor fault. Readings return to normal. You may need to restart the plant if it auto-shutdown.">Clear: Turb</button>
+      <button class="btn danger" onclick="sendCmd({action:'glitch'})" title="Inject 30 seconds of random data corruption across all sensors. Simulates electrical interference or comms noise.">Glitch</button>
+    </div>
+
+    <h2 style="margin-top: 16px;">Plant Controls</h2>
+    <p class="help-text">Modbus coil toggles. To start the plant: turn on Auto Mode, then Intake Pump. The state machine will transition Offline &rarr; Starting &rarr; Running. Green = ON.</p>
+    <div class="coil-controls" id="coil-controls">
+      <button class="coil-btn" data-coil="4" onclick="toggleCoil(4)" title="Enable automatic plant operation. Required (along with Intake Pump) to transition from Offline to Running. The plant state machine only advances when Auto Mode is on."><span class="indicator"></span>Auto Mode</button>
+      <button class="coil-btn" data-coil="0" onclick="toggleCoil(0)" title="Start/stop the raw water intake pump. With Auto Mode on, this starts the plant. Turning off triggers Shutdown state."><span class="indicator"></span>Intake Pump</button>
+      <button class="coil-btn" data-coil="1" onclick="toggleCoil(1)" title="Start/stop alum coagulant dosing. Alum removes turbidity in the flocculation stage. No direct effect on simulation values yet."><span class="indicator"></span>Alum Dose</button>
+      <button class="coil-btn" data-coil="2" onclick="toggleCoil(2)" title="Start/stop chlorine disinfection dosing. Controls the chlorine dosing pump that maintains residual levels."><span class="indicator"></span>Chlorine Dose</button>
+      <button class="coil-btn" data-coil="3" onclick="toggleCoil(3)" title="Open/close the filter backwash valve. When open during Running state, filter differential pressure drops and backwash count increments. Used to clean loaded filters."><span class="indicator"></span>Backwash Valve</button>
+      <button class="coil-btn danger" data-coil="5" onclick="toggleCoil(5)" title="Emergency stop. Immediately forces plant to Offline state regardless of other controls. All processing stops. Turn off E-Stop and re-enable Auto Mode + Intake to restart."><span class="indicator"></span>E-Stop</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// WEBSOCKET CONNECTION
+// ═══════════════════════════════════════════════════════════
+
+const WS_PORT = parseInt(location.port || '8080') + 1;
+let ws = null;
+let connected = false;
+let dosingActive = true;
+let coilStates = {};
+
+function connect() {
+  ws = new WebSocket(`ws://${location.hostname}:${WS_PORT}`);
+  ws.onopen = () => {
+    connected = true;
+    document.getElementById('conn-status').classList.add('connected');
+    document.getElementById('conn-text').textContent = 'Connected';
+  };
+  ws.onclose = () => {
+    connected = false;
+    document.getElementById('conn-status').classList.remove('connected');
+    document.getElementById('conn-text').textContent = 'Disconnected';
+    setTimeout(connect, 2000);
+  };
+  ws.onmessage = (e) => {
+    try { updateDashboard(JSON.parse(e.data)); } catch(err) {}
+  };
+}
+
+function sendCmd(cmd) {
+  if (ws && connected) ws.send(JSON.stringify(cmd));
+}
+
+function toggleDose() {
+  dosingActive = !dosingActive;
+  sendCmd({ action: dosingActive ? 'dose_on' : 'dose_off' });
+  const btn = document.getElementById('btn-dose');
+  btn.textContent = dosingActive ? 'Dose Off' : 'Dose On';
+  btn.classList.toggle('active', !dosingActive);
+}
+
+function toggleCoil(idx) {
+  const current = coilStates[idx] || 0;
+  const next = current ? 0 : 1;
+  coilStates[idx] = next;
+  sendCmd({ action: 'set_coil', coil: idx, value: next });
+  updateCoilButtons();
+}
+
+function updateCoilButtons() {
+  document.querySelectorAll('.coil-btn').forEach(btn => {
+    const coil = parseInt(btn.dataset.coil);
+    const on = coilStates[coil] === 1;
+    btn.classList.toggle('on', on);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// CHARTS SETUP
+// ═══════════════════════════════════════════════════════════
+
+const MAX_POINTS = 300;
+const chartColors = {
+  turb: '#e74c3c',
+  ph: '#3498db',
+  cl2: '#2ecc71',
+  flow: '#00b4d8',
+  level: '#9b59b6',
+  temp: '#f39c12',
+};
+
+function makeChart(canvasId, datasets, yLabel) {
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  return new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: datasets.map(ds => ({
+        label: ds.label,
+        data: [],
+        borderColor: ds.color,
+        backgroundColor: ds.color + '15',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        fill: ds.fill || false,
+        tension: 0.3,
+        yAxisID: ds.yAxisID || 'y',
+      })),
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 0 },
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: {
+          display: datasets.length > 1,
+          labels: { color: '#6b7a8d', font: { size: 10, family: 'monospace' }, boxWidth: 12 },
+        },
+      },
+      scales: {
+        x: {
+          display: true,
+          ticks: { color: '#6b7a8d', font: { size: 9 }, maxTicksLimit: 6 },
+          grid: { color: '#1a2235' },
+        },
+        y: {
+          display: true,
+          title: { display: true, text: yLabel, color: '#6b7a8d', font: { size: 10 } },
+          ticks: { color: '#6b7a8d', font: { size: 9 } },
+          grid: { color: '#1a2235' },
+        },
+        ...(datasets.some(d => d.yAxisID === 'y1') ? {
+          y1: {
+            display: true,
+            position: 'right',
+            title: { display: true, text: datasets.find(d => d.yAxisID === 'y1')?.y1Label || '', color: '#6b7a8d', font: { size: 10 } },
+            ticks: { color: '#6b7a8d', font: { size: 9 } },
+            grid: { drawOnChartArea: false },
+          }
+        } : {}),
+      },
+    },
+  });
+}
+
+const chartTurb = makeChart('chart-turb',
+  [{ label: 'Raw NTU', color: chartColors.turb, fill: true }], 'NTU');
+const chartFlow = makeChart('chart-flow',
+  [{ label: 'Flow', color: chartColors.flow, fill: true }], 'L/s');
+const chartPhCl2 = makeChart('chart-ph-cl2', [
+  { label: 'pH', color: chartColors.ph },
+  { label: 'Cl2 mg/L', color: chartColors.cl2, yAxisID: 'y1', y1Label: 'mg/L' },
+], 'pH');
+const chartLevelTemp = makeChart('chart-level-temp', [
+  { label: 'Level %', color: chartColors.level },
+  { label: 'Temp °C', color: chartColors.temp, yAxisID: 'y1', y1Label: '°C' },
+], '%');
+
+function pushChartData(chart, label, ...values) {
+  chart.data.labels.push(label);
+  values.forEach((v, i) => chart.data.datasets[i].data.push(v));
+  if (chart.data.labels.length > MAX_POINTS) {
+    chart.data.labels.shift();
+    chart.data.datasets.forEach(ds => ds.data.shift());
+  }
+  chart.update('none');
+}
+
+// ═══════════════════════════════════════════════════════════
+// ALARM DEFINITIONS
+// ═══════════════════════════════════════════════════════════
+
+const ALARM_BITS = [
+  'High turbidity (raw)',
+  'High turbidity (filtered)',
+  'Low chlorine residual',
+  'High pH',
+  'Low pH',
+  'Reservoir high level',
+  'Reservoir low level',
+  'Communication fault',
+  'Pump fault',
+  'Valve fault',
+];
+
+const PLANT_STATES = ['Offline', 'Starting', 'Running', 'Shutdown', 'Backwash', 'Fault'];
+
+// ═══════════════════════════════════════════════════════════
+// UPDATE LOOP
+// ═══════════════════════════════════════════════════════════
+
+function updateDashboard(data) {
+  const turb = data.turb_raw ?? 0;
+  const ph = data.ph ?? 7;
+  const cl2 = data.cl2 ?? 0;
+  const flow = data.flow_raw ?? 0;
+  const level = data.level_pct ?? 0;
+  const temp = data.temp ?? 0;
+
+  // Update gauge values
+  setGauge('turb', turb.toFixed(1), turb > 500 ? 'danger' : turb > 200 ? 'warning' : '');
+  setGauge('ph', ph.toFixed(2), (ph < 6.5 || ph > 8.5) ? 'danger' : '');
+  setGauge('cl2', cl2.toFixed(2), cl2 < 0.2 ? 'danger' : cl2 < 0.5 ? 'warning' : 'good');
+  setGauge('flow', flow.toFixed(0), '');
+  setGauge('level', level.toFixed(1), level > 95 ? 'danger' : level < 20 ? 'warning' : '');
+  setGauge('temp', temp.toFixed(1), '');
+
+  // Sim state
+  const sim = data.sim_state || {};
+  const hour = sim.sim_hour || 0;
+  const h = Math.floor(hour);
+  const m = Math.floor((hour % 1) * 60);
+  document.getElementById('sim-time').textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+  document.getElementById('sim-day').textContent = sim.sim_day ?? '0';
+  document.getElementById('sim-speed').textContent = sim.speed ?? '1';
+
+  const timeLabel = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+
+  // Update charts
+  pushChartData(chartTurb, timeLabel, turb);
+  pushChartData(chartFlow, timeLabel, flow);
+  pushChartData(chartPhCl2, timeLabel, ph, cl2);
+  pushChartData(chartLevelTemp, timeLabel, level, temp);
+
+  // Plant state
+  const status = data.plant_status ?? 0;
+  document.querySelectorAll('.state-node').forEach(node => {
+    const s = parseInt(node.dataset.state);
+    node.classList.remove('active', 'fault');
+    if (s === status) {
+      node.classList.add(s === 5 ? 'fault' : 'active');
+    }
+  });
+
+  // Alarms
+  const alarmWord = data.alarm_word ?? 0;
+  const alarmList = document.getElementById('alarm-list');
+  const activeAlarms = [];
+  for (let i = 0; i < ALARM_BITS.length; i++) {
+    if (alarmWord & (1 << i)) activeAlarms.push(ALARM_BITS[i]);
+  }
+  if (activeAlarms.length === 0) {
+    alarmList.innerHTML = '<div class="no-alarms">No active alarms</div>';
+  } else {
+    alarmList.innerHTML = activeAlarms.map(a =>
+      `<div class="alarm-item"><span class="dot"></span>${a}</div>`
+    ).join('');
+  }
+
+  // Update coil states from digital inputs
+  if (data.p_intake !== undefined) coilStates[0] = data.p_intake;
+  if (data.p_alum !== undefined) coilStates[1] = data.p_alum;
+  if (data.p_cl2 !== undefined) coilStates[2] = data.p_cl2;
+  if (data.v_bw !== undefined) coilStates[3] = data.v_bw;
+  updateCoilButtons();
+
+  // Update dosing button from sim state
+  if (sim.dosing_active !== undefined) {
+    dosingActive = sim.dosing_active;
+    const btn = document.getElementById('btn-dose');
+    btn.textContent = dosingActive ? 'Dose Off' : 'Dose On';
+    btn.classList.toggle('active', !dosingActive);
+  }
+}
+
+function setGauge(id, text, cls) {
+  const el = document.getElementById('v-' + id);
+  const gauge = document.getElementById('g-' + id);
+  el.textContent = text;
+  el.className = 'value' + (cls ? ' ' + cls : '');
+  gauge.classList.remove('alarm', 'warning');
+  if (cls === 'danger') gauge.classList.add('alarm');
+  if (cls === 'warning') gauge.classList.add('warning');
+}
+
+// Start
+connect();
+</script>
+</body>
+</html>
